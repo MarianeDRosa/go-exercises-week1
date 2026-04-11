@@ -2,27 +2,47 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 )
 
-// CountWords recebe uma string e devolve um Map com as contagens
-func CountWords(text string) map[string]int {
-	// 1. Criamos um mapa vazio
-	counts := make(map[string]int)
+// WordStat stores the word and its frequency
+type WordStat struct {
+	Word  string
+	Count int
+}
 
-	// 2. Quebramos o texto em palavras (separadas por espaço)
+func CountWords(text string) []WordStat {
+	counts := make(map[string]int)
 	words := strings.Fields(strings.ToLower(text))
 
-	// 3. Loop para contar
 	for _, word := range words {
 		counts[word]++
 	}
 
-	return counts
+	// 1. Convert Map to Slice of Structs
+	var stats []WordStat
+	for word, count := range counts {
+		stats = append(stats, WordStat{Word: word, Count: count})
+	}
+
+	// 2. Sort the Slice by Count (Descending - Highest first)
+	sort.Slice(stats, func(i, j int) bool {
+		if stats[i].Count == stats[j].Count {
+			return stats[i].Word < stats[j].Word // Alphabetical if count is same
+		}
+		return stats[i].Count > stats[j].Count
+	})
+
+	return stats
 }
 
 func main() {
-	frase := "Go is amazing and Go is fast"
-	resultado := CountWords(frase)
-	fmt.Println(resultado)
+	text := "Go is fast and Go is fun"
+	results := CountWords(text)
+
+	fmt.Println("Word Frequency (Sorted by Count):")
+	for _, stat := range results {
+		fmt.Printf("%s: %d\n", stat.Word, stat.Count)
+	}
 }
