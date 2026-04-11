@@ -3,7 +3,7 @@ function calculate(expression) {
   const parts = expression.trim().split(/\s+/);
   
   if (parts.length !== 3) {
-    throw new Error("Formato inválido! Use: '3 + 5'");
+    throw new Error("Invalid format"); // Ajustado para bater com o teste
   }
 
   const n1 = parseFloat(parts[0]);
@@ -11,7 +11,7 @@ function calculate(expression) {
   const n2 = parseFloat(parts[2]);
 
   if (isNaN(n1) || isNaN(n2)) {
-    throw new Error("Números inválidos");
+    throw new Error("Invalid numbers"); // Ajustado para bater com o teste
   }
 
   switch (operator) {
@@ -19,10 +19,10 @@ function calculate(expression) {
     case "-": return n1 - n2;
     case "*": return n1 * n2;
     case "/":
-      if (n2 === 0) throw new Error("Divisão por zero não permitida");
+      if (n2 === 0) throw new Error("Division by zero not allowed");
       return n1 / n2;
     default:
-      throw new Error(`Operador desconhecido: ${operator}`);
+      throw new Error("Unknown operator"); // Ajustado para bater com o teste
   }
 }
 
